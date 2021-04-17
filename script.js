@@ -16,7 +16,7 @@ window.addEventListener('load', ()=> {
 
             const proxy = 'https://corsanywhere.herokuapp.com/';
 
-            const api = `${proxy}api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=73d94735253c37eef5165eb09f430c33`;
+            const api = `${proxy}api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=73d94735253c37eef5165eb09f430c33&units=metric`;
 
             // gets information from server
             fetch(api)
@@ -27,11 +27,23 @@ window.addEventListener('load', ()=> {
                 .then(data => {
                     console.log(data)
                     // {} cool way to shorten syntax and pull out all info from an array
-                    const {description} = data.weather;
+                    const {description, icon} = data.weather[0];
                     const {temp} = data.main;
-                    //set dom elements
+                    const {country} = data.sys;
+                    //set dom elements from the api
+                    temperatureDegree.textContent = temp
+                    temperatureDescription.textContent = description
+                    locationTimezone.textContent= country;
+                    // set icons
+                    setIcons(icon, document.querySelector('.icon'))
                 })
         });
-        
+    }
+
+    function setIcons(icon, iconID){
+        const skycons = new Skycons({color: "white"});
+        const currentIcon = icon
+        skycons.play();
+        return skycons.set(iconID, skycons[currentIcon])
     }
 });
