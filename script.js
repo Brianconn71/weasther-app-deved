@@ -7,6 +7,8 @@ window.addEventListener('load', ()=> {
     let temperatureDescription = document.querySelector('.temperature-description')
     let temperatureDegree = document.querySelector('.temperature-degree')
     let locationTimezone = document.querySelector('.location-timezone')
+    let temperatureSection = document.querySelector('.temperature')
+    const temperatureSpan = document.querySelector('.temperature span')
 
     //if the user has location services allowed then we find them with the users lat and longitude, pop up on browser
     if(navigator.geolocation){
@@ -34,8 +36,21 @@ window.addEventListener('load', ()=> {
                     temperatureDegree.textContent = temp
                     temperatureDescription.textContent = description
                     locationTimezone.textContent= country;
+                    // formula for celsius
+                    let celsius = (temp * 1.8) + 32;
                     // set icons
                     setIcons(icon, document.querySelector('.icon'))
+
+                    // change temperature to celsius/fahrenheit
+                    temperatureSection.addEventListener('click', () => {
+                        if (temperatureSpan.textContent === 'C'){
+                            temperatureSpan.textContent = "F"
+                            temperatureDegree.textContent = Math.floor(celsius);
+                        } else {
+                            temperatureSpan.textContent = "C"
+                            temperatureDegree.textContent = temp;
+                        }
+                    })
                 })
         });
     }
